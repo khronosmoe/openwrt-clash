@@ -17,7 +17,7 @@ This repository will simplify steps mentioned above but you have to do the follo
 -	+luci-app-firewall +luci-app-opkg +luci-proto-ppp +libiwinfo-lua +IPV6:luci-proto-ipv6 \
 +	+luci-app-opkg +libiwinfo-lua \
 ```
-2. Create user `clash` by editing  `/openwrt/package/base-files/files/etc/passwd`
+2. Create user `clash` by editing  `openwrt/package/base-files/files/etc/passwd`
 ```
  nobody:*:65534:65534:nobody:/var:/bin/false
 +clash:x:0:22333:clash:/var/run/clash:/bin/false
