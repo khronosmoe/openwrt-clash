@@ -29,8 +29,111 @@ This repository will simplify steps mentioned above but you have to do the follo
 
 You are ready to go
 
+
+`config.yaml` example for tproxy and fake-ip:
+```
+tproxy-port: 12345
+mode: rule
+ipv6: false
+log-level: warning
+allow-lan: false
+external-controller: 0.0.0.0:9090
+external-ui: yacd
+secret: "secret"
+
+dns:
+  enable: true
+  listen: 127.0.0.1:53
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  fake-ip-filter:
+    - 'dns.msftncsi.com'
+  nameserver:
+    - https://1.12.12.12/dns-query
+    - https://120.53.53.53/dns-query
+    - https://223.5.5.5/dns-query
+    - https://223.6.6.6/dns-query
+
+tun:
+  enable: true 
+  stack: system 
+  dns-hijack:
+    - any:53
+  auto-route: true
+  auto-detect-interface: true
+
+proxies:
+
+
+proxy-groups:
+  - 
+    name: ✈️ PROXY
+    type: select
+    proxies: 
+      - DIRECT
+  -
+    name: 🇨🇳 CN
+    type: select
+    proxies:
+      - DIRECT
+
+
+rule-providers:
+  ad-keyword:
+    type: http
+    behavior: classical
+    url: "https://cdn.jsdelivr.net/gh/Hackl0us/SS-Rule-Snippet@master/Rulesets/Clash/Basic/common-ad-keyword.yaml"
+    path: ./ruleset/common-ad-keyword.yaml
+    interval: 3600
+
+  foreign:
+    type: http
+    behavior: classical
+    url: "https://cdn.jsdelivr.net/gh/Hackl0us/SS-Rule-Snippet@master/Rulesets/Clash/Basic/foreign.yaml"
+    path: ./ruleset/foreign.yaml
+    interval: 3600
+    
+  apple-proxy:
+    type: http
+    behavior: classical
+    url: "https://cdn.jsdelivr.net/gh/Hackl0us/SS-Rule-Snippet@master/Rulesets/Clash/Basic/Apple-proxy.yaml"
+    path: ./ruleset/Apple-proxy.yaml
+    interval: 3600
+
+  apple-direct:
+    type: http
+    behavior: classical
+    url: "https://cdn.jsdelivr.net/gh/Hackl0us/SS-Rule-Snippet@master/Rulesets/Clash/Basic/Apple-direct.yaml"
+    path: ./ruleset/Apple-direct.yaml
+    interval: 3600
+
+  cn:
+    type: http
+    behavior: classical
+    url: "https://cdn.jsdelivr.net/gh/Hackl0us/SS-Rule-Snippet@master/Rulesets/Clash/Basic/CN.yaml"
+    path: ./ruleset/CN.yaml
+    interval: 3600
+
+  lan:
+    type: http
+    behavior: classical
+    url: "https://cdn.jsdelivr.net/gh/Hackl0us/SS-Rule-Snippet@master/Rulesets/Clash/Basic/LAN.yaml"
+    path: ./ruleset/LAN.yaml
+    interval: 3600
+
+rules:
+  - RULE-SET,ad-keyword,REJECT
+  - RULE-SET,foreign,✈️ PROXY
+  - RULE-SET,apple-proxy,✈️ PROXY
+  - RULE-SET,apple-direct,🇨🇳 CN
+  - RULE-SET,cn,🇨🇳 CN
+  - GEOIP,CN,🇨🇳 CN
+  - RULE-SET,lan,DIRECT
+  - MATCH,✈️ PROXY
+```
+
 Special Thanks
-- <https://xtls.github.io/document/level-2/iptables_gid.html>
+- <https://xtls.github.io/document/level-2/iptables_gid>
 - <https://github.com/chandelures/openwrt-clash>
 - <https://mritd.com/2022/02/06/clash-tproxy>
 
