@@ -53,14 +53,7 @@ dns:
     - https://120.53.53.53/dns-query
     - https://223.5.5.5/dns-query
     - https://223.6.6.6/dns-query
-
-tun:
-  enable: true 
-  stack: system 
-  dns-hijack:
-    - any:53
-  auto-route: true
-  auto-detect-interface: true
+    
 
 proxies:
 
